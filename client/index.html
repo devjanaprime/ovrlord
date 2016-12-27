@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+  <head>
+    <title>NewtOne Web Issue Submission</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <script src="vendors/angular.min.js" charset="utf-8"></script>
+    <script src="scripts/ovrlord.js" charset="utf-8"></script>
+  </head>
+  <body ng-app='myApp'>
+    <div class='conatiner' ng-controller='OvrlordController' ng-init='getIssues();'>
+      <div id=nav>
+        Create New - Ignored - Open - Queued - WIP - Closed - Log -
+      </div>
+      <div id='createIssue'>
+        <h1>Create Issue</h1>
+        <form action="../server/newIssue.php" method="post">
+          <table border=0>
+            <tr>
+                <td align=right>From:</td>
+                <td align=left><textarea name="user" rows="1" cols="32"></textarea></td>
+            </tr>
+              <td align=left>Issue:</td>
+              <td>
+                <textarea name="issue" rows="4" cols="50"></textarea><br>
+                <input type="submit">
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      <div class='container'>
+        <h2>Issues</h2>
+        <p>
+          Filter: <label ng-click='setFilter( 0 )'>Open</label> <label ng-click='setFilter( 1 )'>Queued</label> <label ng-click='setFilter( 2 )'>WIP</label> <label ng-click='setFilter( 3 )'>Closed</ng-click> <label ng-click='setFilter( 4 )'>Ignored</label>
+        </p>
+        <div class='container' ng-repeat='issue in issues | filter: issue.status : issueFilter'>
+          <p><strong>Issue {{ issue.id }}</strong></p>
+          <p>
+            {{ issue.issue }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
