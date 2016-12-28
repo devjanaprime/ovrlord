@@ -15,7 +15,6 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
   $scope.getIssues = function(){
     $scope.issues = [];
     $scope.allIssues = [];
-    console.log( 'asdf' );
     $http({
         method : "GET",
         url : "../server/issues.php"
@@ -49,14 +48,27 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
   } // end setIssues
 
   $scope.setFilter = function( filter ){
-    console.log( ' setting issue filter:', filter );
+    console.log( ' setting issue filter, motherfucker:', filter );
     $scope.lastFilter = filter;
-    $scope.issues=[];
-    for (var i = 0; i < $scope.allIssues.length; i++) {
-      if( $scope.allIssues[i].status == filter ){
-        $scope.issues.push( $scope.allIssues[i] );
-      } // end match
-    } // end for
+    if( filter >= 0 ){
+      $scope.issues=[];
+      $scope.logMode = false;
+      for (var i = 0; i < $scope.allIssues.length; i++) {
+        if( $scope.allIssues[i].status == filter ){
+          $scope.issues.push( $scope.allIssues[i] );
+        } // end match
+      } // end for
+    } //end !log
+    else{
+      $scope.logIssues=[];
+      $scope.logMode = true;
+      for (var i = 0; i < $scope.allIssues.length; i++) {
+        if( $scope.allIssues[i].log === 1 ){
+          $scope.logIssues.push( $scope.allIssues[i] );
+        } // end match
+      } // end for
+      console.log( $scope.logIssues );
+    } // end log
   } // end setFilter
 
   $scope.setStatus = function( index, status ){

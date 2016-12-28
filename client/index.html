@@ -38,11 +38,12 @@
             <option value=2>WIP</option>
             <option value=3>Closed</option>
             <option value=4>Ignored</option>
+            <option value=-1>Log</option>
           </select>
         </h2>
-        <div class="row">
+        <div ng-hide='logMode' class="row">
           <div class="col-sm-4" ng-repeat='issue in issues | filter: issue.status : issueFilter'>
-            <p><strong>Issue {{ issue.id }}</strong> ({{ issue.from }})</p>
+            <p ><strong>Issue {{ issue.id }}</strong> ({{ issue.from }})</p>
             <p>
               {{ issue.issue }}
             </p>
@@ -52,6 +53,11 @@
               </p>
             </div>
           </div>
+        </div>
+        <div ng-show='logMode'>
+          <text ng-repeat='logIssue in logIssues | filter: logIssue.log : 1'>
+            * Issue: {{ logIssue.id }}: {{ logIssue.issue }}
+          <br /></text>
         </div>
       </div>
     </div>
