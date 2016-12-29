@@ -13,21 +13,22 @@
   <body ng-app='myApp'>
     <div class='container' ng-controller='OvrlordController' ng-init='getIssues();'>
       <img src='images/ovrlord_icon_128.png' ng-click='toggleMode();'/><img src=images/ovrlord_text.png  ng-click='toggleMode();'/>
+      <p>Issues: {{ issueCount }} Open: {{ openIssueCount }} Completion: {{ ( ( issueCount - openIssueCount ) / issueCount ) * 100 | number: 2 }}%</p>
       <div class='container' ng-show='createMode'>
         <h1>Create Issue</h1>
-        <form action="../server/newIssue.php" method="post">
+        <form>
           <table border=0>
             <tr>
-                <td align=right>From:</td>
-                <td align=left><textarea name="user" rows="1" cols="32"></textarea></td>
+                <td align=right>Owner:</td>
+                <td align=left><textarea ng-model="userIn" rows="1" cols="32"></textarea></td>
             </tr>
               <td align=left>Issue:</td>
               <td>
-                <textarea name="issue" rows="4" cols="50"></textarea><br>
-                <input type="submit">
+                <textarea ng-model="issueIn" rows="4" cols="50"></textarea><br>
               </td>
             </tr>
           </table>
+          <button ng-click='addNewTicket();'>Add Ticket</button>
         </form>
       </div>
       <div class='container' ng-hide='createMode'>

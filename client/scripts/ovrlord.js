@@ -8,6 +8,23 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
   // global filter
   $scope.lastFilter = 0;
 
+  $scope.addNewTicket = function(){
+    var url = '../server/newIssue.php?user=' + $scope.userIn + '&issue=' + $scope.issueIn;
+    $http({
+        method : "GET",
+        url : url,
+    }).then( function succes( response ) {
+        console.log( 'success:', response.data );
+        alert( 'issue added' );
+        // clear inputs
+        $scope.userIn = '';
+        $scope.issueIn = '';
+        $scope.setFilter( 0 );
+    }, function error( response ) {
+        console.log( 'error:', response );
+    }); // end http
+  }; // end addNewTicket
+
   $scope.applyFilter = function(){
     $scope.setFilter( $scope.filterIn );
   }; // end applyFilter
@@ -15,6 +32,8 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
   $scope.getIssues = function(){
     $scope.issues = [];
     $scope.allIssues = [];
+    $scope.issueCount = 0;
+    $scope.openIssueCount = 0;
     $http({
         method : "GET",
         url : "../server/issues.php"
@@ -23,15 +42,22 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
         for( var i in response.data ){
           if( response.data[i].status == 0 ){
             response.data[i].displayStatus = 'open';
+            $scope.issueCount++;
+            $scope.openIssueCount++;
           } // end open
           else if( response.data[i].status == 1 ){
             response.data[i].displayStatus = 'queued';
+            $scope.issueCount++;
+            $scope.openIssueCount++;
           } // end queued
           else if( response.data[i].status == 2 ){
             response.data[i].displayStatus = 'wip';
+            $scope.issueCount++;
+            $scope.openIssueCount++;
           } // end wip
           else if( response.data[i].status == 3 ){
             response.data[i].displayStatus = 'closed';
+            $scope.issueCount++;
           } // end closed
           else if( response.data[i].status == 4 ){
             response.data[i].displayStatus = 'ignored';
@@ -41,6 +67,7 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
           } // end wtf
           $scope.allIssues.push( response.data[i] );
         } // end for
+        console.log( 'Issues:', $scope.issueCount, $scope.openIssueCount );
         $scope.setFilter( 0 );
     }, function error( response ) {
         console.log( 'error:', response );

@@ -4,8 +4,8 @@
     if (mysqli_connect_errno()){
       echo "Failed to connect to server: " . mysqli_connect_error();
     }
-    $user_in = $_POST["user"];
-    $issue_in = $_POST["issue"];
+    $user_in = $_GET["user"];
+    $issue_in = $_GET["issue"];
     $sql = "INSERT INTO issues (`from`, `issue`, `created`, `status`, `log` )
     VALUES ( '$user_in', '$issue_in', now(), '0', '0' )";
     if ($connect->query($sql) === TRUE){
