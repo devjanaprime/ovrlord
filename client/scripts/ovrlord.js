@@ -3,12 +3,8 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
   // arrays
   $scope.issues = []; // for display
   $scope.allIssues = []; // all the things
-  // ppl
-  $scope.ppl = [ 'ari', 'dev', 'devnari' ];
   // ui control
   $scope.createMode = false;
-  // global filter
-  $scope.lastFilter = 0;
 
   $scope.addNewTicket = function(){
     var url = '../server/newIssue.php?user=' + $scope.userIn + '&issue=' + $scope.issueIn + '&month=' + $scope.monthIn;
@@ -78,7 +74,6 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
 
   $scope.setFilter = function( filter ){
     console.log( ' setting issue filter, motherfucker:', filter );
-    $scope.lastFilter = filter;
     if( filter >= 0 ){
       $scope.issues=[];
       $scope.logMode = false;
@@ -109,7 +104,7 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
     }).then(function succes( response ) {
         console.log( 'success:', response );
         $scope.getIssues();
-        $scope.setFilter( $scope.lastFilter );
+        $scope.setFilter( 0 );
     }, function error( response ) {
         console.log( 'error:', response );
     }); // end http

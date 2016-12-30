@@ -12,6 +12,7 @@
   </head>
   <body ng-app='myApp'>
     <div class='container' ng-controller='OvrlordController' ng-init='getIssues();'>
+      <br />
       <img src='images/ovrlord_icon_128.png' ng-click='toggleMode();'/><img src=images/ovrlord_text.png  ng-click='toggleMode();'/>
       <p>Issues: {{ issueCount }} Open: {{ openIssueCount }} Completion: {{ ( ( issueCount - openIssueCount ) / issueCount ) * 100 | number: 2 }}%</p>
       <div class='container' ng-show='createMode'>
@@ -39,8 +40,8 @@
           </select>
         </h2>
         <div ng-hide='logMode' class="row">
-          <div style="padding:3px;outline:solid black;margin:5px;" class="col-sm-3" ng-repeat='issue in issues | filter: issue.status : issueFilter'>
-            <p><strong>Issue {{ issue.id }}</strong> ( owner: {{ issue.from }} )</p>
+          <div style="padding:5px;outline:solid white;background-color:whitesmoke" class="col-sm-4" ng-repeat='issue in issues | filter: issue.status : issueFilter'>
+            <p><strong>Ticket {{ issue.id }}</strong> ( owner: {{ issue.from }} )</p>
             <p>
               {{ issue.issue }}
             </p>
