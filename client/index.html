@@ -17,17 +17,13 @@
       <div class='container' ng-show='createMode'>
         <h1>Create Issue</h1>
         <form>
-          <table border=0>
-            <tr>
-                <td align=right>Owner:</td>
-                <td align=left><textarea ng-model="userIn" rows="1" cols="32"></textarea></td>
-            </tr>
-              <td align=left>Issue:</td>
-              <td>
+              <p>
+                Owner:
+                <input type="text" ng-model="userIn">
+              </p>
+              <p>Issue:
                 <textarea ng-model="issueIn" rows="4" cols="50"></textarea><br>
-              </td>
-            </tr>
-          </table>
+              </p>
           <button ng-click='addNewTicket();'>Add Ticket</button>
         </form>
       </div>
@@ -43,14 +39,14 @@
           </select>
         </h2>
         <div ng-hide='logMode' class="row">
-          <div class="col-sm-4" ng-repeat='issue in issues | filter: issue.status : issueFilter'>
-            <p ><strong>Issue {{ issue.id }}</strong> ({{ issue.from }})</p>
+          <div style="padding:3px;outline:solid black;margin:5px;" class="col-sm-3" ng-repeat='issue in issues | filter: issue.status : issueFilter'>
+            <p><strong>Issue {{ issue.id }}</strong> ( owner: {{ issue.from }} )</p>
             <p>
               {{ issue.issue }}
             </p>
             <div class='container'>
               <p>
-                Change status: <statuser ng-if='issue.status != 0' ng-click='setStatus( $index, 0 )'>Open</statuser> <statuser ng-if='issue.status != 1' ng-click='setStatus( $index, 1 )'>Queue</statuser> <statuser ng-if='issue.status != 2' ng-click='setStatus( $index, 2 )'>WIP</statuser> <statuser ng-if='issue.status != 3' ng-click='setStatus( $index, 3 )'>Close</statuser> <statuser ng-if='issue.status != 4' ng-click='setStatus( $index, 4 )'>Ignore</statuser> <statuser ng-if='issue.log == 1' ng-click='addToLog( $index )'>Log</statuser> <statuser ng-if='issue.log == 0' ng-click='removeFromLog( $index )'>Log</statuser>
+                <button ng-if='issue.status != 0' ng-click='setStatus( $index, 0 )'>Open</button><button ng-if='issue.status != 1' ng-click='setStatus( $index, 1 )'>Queue</button><button ng-if='issue.status != 2' ng-click='setStatus( $index, 2 )'>WIP</button><button ng-if='issue.status != 3' ng-click='setStatus( $index, 3 )'>Close</button><button ng-if='issue.status != 4' ng-click='setStatus( $index, 4 )'>Ignore</button><button ng-if='issue.log == 1' ng-click='addToLog( $index )'>Log</button><button ng-if='issue.log == 0' ng-click='removeFromLog( $index )'>Log</button>
               </p>
             </div>
           </div>

@@ -21,6 +21,7 @@
         $echoText = $echoText . '"' . created . '": "' . $row["created"] . '",';
         $echoText = $echoText . '"' . status . '": ' . $row["status"] . ',';
         $echoText = $echoText . '"' . log . '": ' . $row["log"] . ',';
+        $echoText = $echoText . '"' . month . '": ' . $row["month"] . ',';
         $echoText = $echoText . '"' . issue . '": "' . $issue . '"}';
         if( $rowCounter < $result->num_rows )
        {

@@ -3,22 +3,24 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
   // arrays
   $scope.issues = []; // for display
   $scope.allIssues = []; // all the things
+  // ppl
+  $scope.ppl = [ 'ari', 'dev', 'devnari' ];
   // ui control
   $scope.createMode = false;
   // global filter
   $scope.lastFilter = 0;
 
   $scope.addNewTicket = function(){
-    var url = '../server/newIssue.php?user=' + $scope.userIn + '&issue=' + $scope.issueIn;
+    var url = '../server/newIssue.php?user=' + $scope.userIn + '&issue=' + $scope.issueIn + '&month=' + $scope.monthIn;
     $http({
         method : "GET",
         url : url,
     }).then( function succes( response ) {
         console.log( 'success:', response.data );
-        alert( 'issue added' );
         // clear inputs
         $scope.userIn = '';
         $scope.issueIn = '';
+        $scope.getIssues();
         $scope.setFilter( 0 );
     }, function error( response ) {
         console.log( 'error:', response );
