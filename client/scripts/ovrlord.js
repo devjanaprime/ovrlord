@@ -12,12 +12,16 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
         method : "GET",
         url : url,
     }).then( function succes( response ) {
-        console.log( 'success:', response.data );
-        // clear inputs
-        $scope.userIn = '';
-        $scope.issueIn = '';
-        $scope.getIssues();
-        $scope.setFilter( 0 );
+        if( response.data == 'success' ){
+          // clear inputs
+          $scope.userIn = '';
+          $scope.issueIn = '';
+          $scope.getIssues();
+          $scope.setFilter( 0 );
+        } // end success
+        else {
+          alert( 'error:',response.data );
+        } // end !success
     }, function error( response ) {
         console.log( 'error:', response );
     }); // end http
@@ -36,41 +40,58 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
         method : "GET",
         url : "../server/issues.php"
     }).then(function succes( response ) {
-        console.log( 'success:', response.data );
-        for( var i in response.data ){
-          if( response.data[i].status == 0 ){
-            response.data[i].displayStatus = 'open';
-            $scope.issueCount++;
-            $scope.openIssueCount++;
-          } // end open
-          else if( response.data[i].status == 1 ){
-            response.data[i].displayStatus = 'queued';
-            $scope.issueCount++;
-            $scope.openIssueCount++;
-          } // end queued
-          else if( response.data[i].status == 2 ){
-            response.data[i].displayStatus = 'wip';
-            $scope.issueCount++;
-            $scope.openIssueCount++;
-          } // end wip
-          else if( response.data[i].status == 3 ){
-            response.data[i].displayStatus = 'closed';
-            $scope.issueCount++;
-          } // end closed
-          else if( response.data[i].status == 4 ){
-            response.data[i].displayStatus = 'ignored';
-          } // end ignored
-          else {
-            response.data[i].displayStatus = 'wtf';
-          } // end wtf
-          $scope.allIssues.push( response.data[i] );
-        } // end for
-        console.log( 'Issues:', $scope.issueCount, $scope.openIssueCount );
-        $scope.setFilter( 0 );
+      for( var i in response.data ){
+        if( response.data[i].status == 0 ){
+          response.data[i].displayStatus = 'open';
+          $scope.issueCount++;
+          $scope.openIssueCount++;
+        } // end open
+        else if( response.data[i].status == 1 ){
+          response.data[i].displayStatus = 'queued';
+          $scope.issueCount++;
+          $scope.openIssueCount++;
+        } // end queued
+        else if( response.data[i].status == 2 ){
+          response.data[i].displayStatus = 'wip';
+          $scope.issueCount++;
+          $scope.openIssueCount++;
+        } // end wip
+        else if( response.data[i].status == 3 ){
+          response.data[i].displayStatus = 'closed';
+          $scope.issueCount++;
+        } // end closed
+        else if( response.data[i].status == 4 ){
+          response.data[i].displayStatus = 'ignored';
+        } // end ignored
+        else {
+          response.data[i].displayStatus = 'wtf';
+        } // end wtf
+        $scope.allIssues.push( response.data[i] );
+      } // end for
+      $scope.setFilter( 0 );
     }, function error( response ) {
-        console.log( 'error:', response );
+        alert( 'error:', response );
     }); // end http
   } // end setIssues
+
+  $scope.logIssue = function( index, logValue ){
+    var url = '../server/log.php?id=' + $scope.allIssues[ index ].id + '&log=' + logValue;
+    console.log( url );
+    $http({
+        method : "GET",
+        url : url,
+    }).then( function succes( response ) {
+      if( response.data == 'success' ){
+        console.log( 'log success:', response.data );
+        $scope.getIssues();
+      } // end success
+      else {
+        alert( 'error:', response.data );
+      } // end !success
+    }, function error( response ) {
+        alert( 'error:', response );
+    }); // end http
+  }; // end addNewTicket
 
   $scope.setFilter = function( filter ){
     console.log( ' setting issue filter, motherfucker:', filter );
@@ -106,7 +127,7 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
         $scope.getIssues();
         $scope.setFilter( 0 );
     }, function error( response ) {
-        console.log( 'error:', response );
+        alert( 'error:', response );
     }); // end http
   }; // end update status
 

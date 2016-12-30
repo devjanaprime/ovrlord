@@ -6,7 +6,12 @@
     }
     $bugID_in = $_GET["id"];
     $statusIn = $_GET["status"];
-    $sql = "UPDATE issues SET status='" . $statusIn . "' WHERE id=" . $bugID_in;
+    if( $statusIn == "3" ){
+      $sql = "UPDATE issues SET status='" . $statusIn . ", log=1' WHERE id=" . $bugID_in;
+    } // end close
+    else{
+      $sql = "UPDATE issues SET status='" . $statusIn . "' WHERE id=" . $bugID_in;
+    } // end !close
     if ($connect->query($sql) === TRUE){
         echo "success";
     }
