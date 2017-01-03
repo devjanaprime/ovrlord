@@ -12,50 +12,103 @@
   </head>
   <body ng-app='myApp'>
     <div class='container' ng-controller='OvrlordController' ng-init='getIssues();'>
-      <br />
       <img src='images/ovrlord_icon_128.png' ng-click='toggleMode();'/><img src=images/ovrlord_text.png  ng-click='toggleMode();'/>
-      <p>Issues: {{ issueCount }} Open: {{ openIssueCount }} Completion: {{ ( ( issueCount - openIssueCount ) / issueCount ) * 100 | number: 2 }}%</p>
-      <div class='container' ng-show='createMode'>
-        <h1>Create Issue</h1>
-        <form>
-              <p>
-                Owner:
-                <input type="text" ng-model="userIn">
-              </p>
-              <p>Issue:
-                <textarea ng-model="issueIn" rows="4" cols="50"></textarea><br>
-              </p>
-          <button ng-click='addNewTicket();'>Add Ticket</button>
-        </form>
-      </div>
-      <div class='container' ng-hide='createMode'>
-        <h2>Issues
-          <select ng-model='filterIn' ng-change='applyFilter()'>
-            <option value=0 selected>Open</option>
-            <option value=1>Queued</option>
-            <option value=2>WIP</option>
-            <option value=3>Closed</option>
-            <option value=4>Ignored</option>
-            <option value=-1>Log</option>
+      <div ng-hide='loggedIn'>
+        <h1>
+          <select id='passcode0' ng-change='checkPassCode()'>
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
           </select>
-        </h2>
-        <div ng-hide='logMode' class="row">
-          <div style="padding:5px;outline:solid white;background-color:whitesmoke" class="col-sm-4" ng-repeat='issue in issues | filter: issue.status : issueFilter'>
-            <p><strong>Ticket {{ issue.id }}</strong> ( owner: {{ issue.from }} )</p>
-            <p>
-              {{ issue.issue }}
-            </p>
-            <div class='container'>
+          <select id='passcode1' ng-change='checkPassCode()'>
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+          </select>
+          <select id='passcode2' ng-change='checkPassCode()'>
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+          </select>
+          <select id='passcode3' ng-change='checkPassCode()'>
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+          </select>
+        </h1>
+      </div>
+      <div ng-show='loggedIn'>
+        <p>Issues: {{ issueCount }} Open: {{ openIssueCount }} Completion: {{ ( ( issueCount - openIssueCount ) / issueCount ) * 100 | number: 2 }}%</p>
+        <div class='container' ng-show='createMode'>
+          <h1>Create Issue</h1>
+          <form>
+                <p>
+                  Owner:
+                  <input type="text" ng-model="userIn">
+                </p>
+                <p>Issue:
+                  <textarea ng-model="issueIn" rows="4" cols="50"></textarea><br>
+                </p>
+            <button ng-click='addNewTicket();'>Add Ticket</button>
+          </form>
+        </div>
+        <div class='container' ng-hide='createMode'>
+          <h2>Issues
+            <select ng-model='filterIn' ng-change='applyFilter()'>
+              <option value=0 selected>Open</option>
+              <option value=1>Queued</option>
+              <option value=2>WIP</option>
+              <option value=3>Closed</option>
+              <option value=4>Ignored</option>
+              <option value=-1>Log</option>
+            </select>
+          </h2>
+          <div ng-hide='logMode' class="row">
+            <div style="padding:5px;outline:solid white;background-color:whitesmoke" class="col-sm-4" ng-repeat='issue in issues | filter: issue.status : issueFilter'>
+              <p><strong>Ticket {{ issue.id }}</strong> ( owner: {{ issue.from }} )</p>
               <p>
-                <button ng-if='issue.status != 0' ng-click='setStatus( $index, 0 )'>Open</button><button ng-if='issue.status != 1' ng-click='setStatus( $index, 1 )'>Queue</button><button ng-if='issue.status != 2' ng-click='setStatus( $index, 2 )'>WIP</button><button ng-if='issue.status != 3' ng-click='setStatus( $index, 3 )'>Close</button><button ng-if='issue.status != 4' ng-click='setStatus( $index, 4 )'>Ignore</button>
+                {{ issue.issue }}
               </p>
+              <div class='container'>
+                <p>
+                  <button ng-if='issue.status != 0' ng-click='setStatus( $index, 0 )'>Open</button><button ng-if='issue.status != 1' ng-click='setStatus( $index, 1 )'>Queue</button><button ng-if='issue.status != 2' ng-click='setStatus( $index, 2 )'>WIP</button><button ng-if='issue.status != 3' ng-click='setStatus( $index, 3 )'>Close</button><button ng-if='issue.status != 4' ng-click='setStatus( $index, 4 )'>Ignore</button>
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-        <div ng-show='logMode'>
-          <text ng-repeat='logIssue in logIssues | filter: logIssue.log : 1'>
-            * Issue: {{ logIssue.id }}: {{ logIssue.issue }}
-          <br /></text>
+          <div ng-show='logMode'>
+            <text ng-repeat='logIssue in logIssues | filter: logIssue.log : 1'>
+              * Issue: {{ logIssue.id }}: {{ logIssue.issue }}
+            <br /></text>
+          </div>
         </div>
       </div>
     </div>
