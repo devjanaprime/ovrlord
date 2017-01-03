@@ -6,6 +6,7 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
   // ui control
   $scope.createMode = false;
   $scope.loggedIn = false;
+  $scope.lastFilter = 0;
 
   $scope.addNewTicket = function(){
     var url = '../server/newIssue.php?user=' + $scope.userIn + '&issue=' + $scope.issueIn + '&month=' + $scope.monthIn;
@@ -18,7 +19,7 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
           $scope.userIn = '';
           $scope.issueIn = '';
           $scope.getIssues();
-          $scope.setFilter( 0 );
+          $scope.setFilter( $scope.lastFilter );
         } // end success
         else {
           alert( 'error:',response.data );
@@ -28,8 +29,9 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
     }); // end http
   }; // end addNewTicket
 
-  $scope.applyFilter = function(){
+  $scope.applyFilter = function( ){
     $scope.setFilter( $scope.filterIn );
+    $scope.lastFilter = $scope.filterIn;
   }; // end applyFilter
 
   $scope.checkLogIn = function(){
@@ -89,7 +91,6 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
         } // end wtf
         $scope.allIssues.push( response.data[i] );
       } // end for
-      $scope.setFilter( 0 );
     }, function error( response ) {
         alert( 'error:', response );
     }); // end http
@@ -155,7 +156,7 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
     }).then(function succes( response ) {
         console.log( 'success:', response );
         $scope.getIssues();
-        $scope.setFilter( 0 );
+        $scope.setFilter( $scope.lastFilter );
     }, function error( response ) {
         alert( 'error:', response );
     }); // end http
@@ -165,7 +166,7 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
     if( $scope.loggedIn ){
       $scope.createMode = !$scope.createMode;
       $scope.filterIn = '';
-      $scope.applyFilter( 0 );
+      $scope.applyFilter( $scope.lastFilter );
     } //end if
   }; // end toggleMode
 
