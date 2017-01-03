@@ -5,6 +5,7 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
   $scope.allIssues = []; // all the things
   // ui control
   $scope.createMode = false;
+  $scope.loggedIn = false;
 
   $scope.addNewTicket = function(){
     var url = '../server/newIssue.php?user=' + $scope.userIn + '&issue=' + $scope.issueIn + '&month=' + $scope.monthIn;
@@ -30,6 +31,26 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
   $scope.applyFilter = function(){
     $scope.setFilter( $scope.filterIn );
   }; // end applyFilter
+
+  $scope.checkLogIn = function(){
+    if( localStorage.getItem( "ovrlordLoggedIn" ) == 'true' ){
+      $scope.loggedIn = true;
+      $scope.getIssues();
+    } // end if loggedIn
+    else{
+      $scope.logOut();
+    }
+  }; //end checkLogIn
+
+  $scope.checkPassCode = function(){
+    var passcode = $scope.passcode0 + $scope.passcode1 + $scope.passcode2 + $scope.passcode3;
+    var passcodeHash = md5( passcode );
+    if( passcodeHash == 'bf5cd8b2509011b9502a72296edc14a0' ){
+      $scope.loggedIn = true;
+      localStorage.setItem( "ovrlordLoggedIn", "true" );
+      $scope.getIssues();
+    };
+  }; // end checkPassCode
 
   $scope.getIssues = function(){
     $scope.issues = [];
@@ -93,6 +114,15 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
     }); // end http
   }; // end addNewTicket
 
+  $scope.logOut = function(){
+    localStorage.setItem( "ovrlordLoggedIn", "false" );
+    $scope.loggedIn = false;
+    $scope.passcode0 = '';
+    $scope.passcode1 = '';
+    $scope.passcode2 = '';
+    $scope.passcode3 = '';
+  }; // end log out
+
   $scope.setFilter = function( filter ){
     console.log( ' setting issue filter, motherfucker:', filter );
     if( filter >= 0 ){
@@ -132,7 +162,11 @@ myApp.controller( 'OvrlordController', [ '$scope', '$http', function( $scope, $h
   }; // end update status
 
   $scope.toggleMode = function(){
-    $scope.createMode = !$scope.createMode;
+    if( $scope.loggedIn ){
+      $scope.createMode = !$scope.createMode;
+      $scope.filterIn = '';
+      $scope.applyFilter( 0 );
+    } //end if
   }; // end toggleMode
 
 }]); // end controller
