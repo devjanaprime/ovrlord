@@ -16,7 +16,7 @@
       <img src='images/ovrlord_icon_128.png' ng-click='toggleMode();'/><img src=images/ovrlord_text.png  ng-click='toggleMode();'/>
       <div ng-hide='loggedIn'>
         <h2>
-          <select ng-model='passcode0' ng-change='checkPassCode()'>
+          <select class="selectpicker" ng-model='passcode0' ng-change='checkPassCode()'>
             <option>0</option>
             <option>1</option>
             <option>2</option>
@@ -28,7 +28,7 @@
             <option>8</option>
             <option>9</option>
           </select>
-          <select ng-model='passcode1' ng-change='checkPassCode()'>
+          <select class="selectpicker" ng-model='passcode1' ng-change='checkPassCode()'>
             <option>0</option>
             <option>1</option>
             <option>2</option>
@@ -40,7 +40,7 @@
             <option>8</option>
             <option>9</option>
           </select>
-          <select ng-model='passcode2' ng-change='checkPassCode()'>
+          <select class="selectpicker" ng-model='passcode2' ng-change='checkPassCode()'>
             <option>0</option>
             <option>1</option>
             <option>2</option>
@@ -52,7 +52,7 @@
             <option>8</option>
             <option>9</option>
           </select>
-          <select ng-model='passcode3' ng-change='checkPassCode()'>
+          <select class="selectpicker" ng-model='passcode3' ng-change='checkPassCode()'>
             <option>0</option>
             <option>1</option>
             <option>2</option>
@@ -83,7 +83,7 @@
         </div>
         <div class='container' ng-hide='createMode'>
           <h2>Issues
-            <select ng-model='filterIn' ng-change='applyFilter()'>
+            <select class="selectpicker" ng-model='filterIn' ng-change='applyFilter()'>
               <option value=0 selected>Open</option>
               <option value=1>Queued</option>
               <option value=2>WIP</option>
